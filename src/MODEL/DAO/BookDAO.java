@@ -454,14 +454,14 @@ public class BookDAO
         boolean hasUpdates = false;
 
         // Vérifier chaque champ et l'ajouter à la requête s'il a été modifié
-        if (book.getAuthor() != null && book.getAuthor().getId() != bookExist.getAuthor().getId())
+        if (book.getAuthor() != null && book.getAuthor().getId() > 0 && book.getAuthor().getId() != bookExist.getAuthor().getId())
         {
             sql.append("author_id = ?");
             parameters.add(book.getAuthor().getId());
             hasUpdates = true;
         }
 
-        if (book.getSubject() != null && book.getSubject().getId() != bookExist.getSubject().getId())
+        if (book.getSubject() != null && book.getAuthor().getId() > 0  && book.getSubject().getId() != bookExist.getSubject().getId())
         {
             if (hasUpdates) sql.append(", ");
             sql.append("subject_id = ?");
@@ -469,7 +469,7 @@ public class BookDAO
             hasUpdates = true;
         }
 
-        if (book.getTitle() != null && !book.getTitle().equals(bookExist.getTitle()))
+        if (book.getTitle() != null && !book.getTitle().equals("null") && !book.getTitle().equals(bookExist.getTitle()))
         {
             if (hasUpdates) sql.append(", ");
             sql.append("title = ?");
@@ -477,7 +477,7 @@ public class BookDAO
             hasUpdates = true;
         }
 
-        if (book.getIsbn() != null && !book.getIsbn().equals(bookExist.getIsbn()))
+        if (book.getIsbn() != null && !book.getIsbn().equals("null") && !book.getIsbn().equals(bookExist.getIsbn()))
         {
             if (hasUpdates) sql.append(", ");
             sql.append("isbn = ?");
@@ -485,7 +485,7 @@ public class BookDAO
             hasUpdates = true;
         }
 
-        if (book.getPageCount() != bookExist.getPageCount())
+        if ( book.getPageCount() > 0 && book.getPageCount() != bookExist.getPageCount())
         {
             if (hasUpdates) sql.append(", ");
             sql.append("page_count = ?");
@@ -493,7 +493,7 @@ public class BookDAO
             hasUpdates = true;
         }
 
-        if (book.getStockQuantity() != bookExist.getStockQuantity())
+        if ( book.getStockQuantity() > 0 && book.getStockQuantity() != bookExist.getStockQuantity())
         {
             if (hasUpdates) sql.append(", ");
             sql.append("stock_quantity = ?");
@@ -501,7 +501,7 @@ public class BookDAO
             hasUpdates = true;
         }
 
-        if (book.getPrice() != bookExist.getPrice())
+        if (book.getPrice() > 0.0 && book.getPrice() != bookExist.getPrice())
         {
             if (hasUpdates) sql.append(", ");
             sql.append("price = ?");
@@ -509,7 +509,7 @@ public class BookDAO
             hasUpdates = true;
         }
 
-        if (book.getPublishYear() != bookExist.getPublishYear())
+        if ( book.getPublishYear() > 1200 && book.getPublishYear() != bookExist.getPublishYear())
         {
             if (hasUpdates) sql.append(", ");
             sql.append("publish_year = ?");
