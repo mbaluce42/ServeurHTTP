@@ -165,7 +165,7 @@ public class AuthorDAO
 
     public boolean update(Author author)
     {
-        // vérifier si l'auteur existe
+        // Vérifier si l'auteur existe
         Author authorExist = findById(author.getId());
         if (authorExist == null)
         {
@@ -179,28 +179,27 @@ public class AuthorDAO
         boolean hasUpdates = false;
 
         // Vérifier chaque champ et l'ajouter à la requête s'il a été modifié
-        if (author.getLastName() != null && !author.getLastName().equals(authorExist.getLastName()))
+        if (author.getLastName() != null && !author.getLastName().equals("") && !author.getLastName().equals("null") && !author.getLastName().equals(authorExist.getLastName()))
         {
             sql.append("last_name = ?");
-            //met la 1ere lettre du nom
+            // Mettre la 1ère lettre du nom en majuscule
             author.setLastName(author.getLastName().substring(0, 1).toUpperCase() + author.getLastName().substring(1));
-
             parameters.add(author.getLastName());
             hasUpdates = true;
         }
 
-        if (author.getFirstName() != null && !author.getFirstName().equals(authorExist.getFirstName()))
+        if (author.getFirstName() != null && !author.getFirstName().equals("") && !author.getFirstName().equals("null") && !author.getFirstName().equals(authorExist.getFirstName()))
         {
             if (hasUpdates) sql.append(", ");
             sql.append("first_name = ?");
-            //met la 1ere lettre du prenom
+            // Mettre la 1ère lettre du prénom en majuscule
             author.setFirstName(author.getFirstName().substring(0, 1).toUpperCase() + author.getFirstName().substring(1));
-
             parameters.add(author.getFirstName());
             hasUpdates = true;
         }
 
-        if (author.getBirthDate() != null && !author.getBirthDate().equals(authorExist.getBirthDate())) {
+        if (author.getBirthDate() != null && !author.getBirthDate().equals("") && !author.getBirthDate().equals("null") && !author.getBirthDate().equals(authorExist.getBirthDate()))
+        {
             if (hasUpdates) sql.append(", ");
             sql.append("birth_date = ?");
             parameters.add(author.getBirthDate());
@@ -232,6 +231,10 @@ public class AuthorDAO
                 {
                     stmt.setInt(i + 1, (Integer) param);
                 }
+                else if (param instanceof java.sql.Date) // Pour la date
+                {
+                    stmt.setDate(i + 1, (java.sql.Date) param);
+                }
             }
 
             int affectedRows = stmt.executeUpdate();
@@ -244,6 +247,7 @@ public class AuthorDAO
             return false;
         }
     }
+
 
     public boolean delete(int id)
     {

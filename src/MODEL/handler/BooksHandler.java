@@ -41,6 +41,9 @@ public class BooksHandler implements HttpHandler
             case "DELETE":
                 handleDeleteBook(exchange);
                 break;
+            case "OPTIONS":
+                handleOptions(exchange);
+                break;
             default:
                 HttpHelper.sendResponse(exchange, 405, "Method Not Allowed");
                 break;
@@ -66,58 +69,141 @@ public class BooksHandler implements HttpHandler
                 HttpHelper.sendJsonErrorResponse(exchange, 404, "Book not found");
                 return;
             }
-            books.put(JsonHelper.toJson(book));
+            //books.put(JsonHelper.toJson(book));
+            for (Book b: booksList)
+            {
+                books.put(JsonHelper.toJson(b));
+            }
         }
         // Recherche par ISBN
         if (queryParams.containsKey("isbn"))
         {
             Book book = bookDAO.findIsbn(queryParams.get("isbn"));
-            if (book != null)
+            if (book == null)
             {
-                books.put(JsonHelper.toJson(book));
+                HttpHelper.sendJsonErrorResponse(exchange, 404, "Book not found");
+                return;
             }
+
+            books.put(JsonHelper.toJson(book));
         }
         // Recherche par titre
         if (queryParams.containsKey("title"))
         {
             booksList = bookDAO.findByTitle(queryParams.get("title"));
-            books.put(JsonHelper.booksToJson(booksList));
+
+            if (booksList == null)
+            {
+                HttpHelper.sendJsonErrorResponse(exchange, 404, "Book not found");
+                return;
+            }
+            //books.put(JsonHelper.booksToJson(booksList));
+            for(Book b: booksList)
+            {
+                books.put(JsonHelper.toJson(b));
+            }
         }
         // Recherche par nom et prénom d'auteur
         if (queryParams.containsKey("authorLastName") && queryParams.containsKey("authorFirstName"))
         {
             booksList = bookDAO.findByAuthorLastNameFirstName(queryParams.get("authorLastName"), queryParams.get("authorFirstName"));
-            books.put(JsonHelper.booksToJson(booksList));
+
+            if (booksList == null)
+            {
+                HttpHelper.sendJsonErrorResponse(exchange, 404, "Book not found");
+                return;
+            }
+
+            //books.put(JsonHelper.booksToJson(booksList));
+            for(Book b: booksList)
+            {
+                books.put(JsonHelper.toJson(b));
+            }
         }
         // Recherche par ID d'auteur
         if (queryParams.containsKey("authorId"))
         {
             booksList = bookDAO.findByAuthorId(Integer.parseInt(queryParams.get("authorId")));
-            books.put(JsonHelper.booksToJson(booksList));
+
+            if (booksList == null)
+            {
+                HttpHelper.sendJsonErrorResponse(exchange, 404, "Book not found");
+                return;
+            }
+
+            //books.put(JsonHelper.booksToJson(booksList));
+            for(Book b: booksList)
+            {
+                books.put(JsonHelper.toJson(b));
+            }
         }
         // Recherche par nom de sujet
         if (queryParams.containsKey("subjectName"))
         {
             booksList = bookDAO.findBySubjectName(queryParams.get("subjectName"));
-            books.put(JsonHelper.booksToJson(booksList));
+
+            if (booksList == null)
+            {
+                HttpHelper.sendJsonErrorResponse(exchange, 404, "Book not found");
+                return;
+            }
+
+            //books.put(JsonHelper.booksToJson(booksList));
+            for(Book b: booksList)
+            {
+                books.put(JsonHelper.toJson(b));
+            }
         }
         // Recherche par ID de sujet
         if (queryParams.containsKey("subjectId"))
         {
             booksList = bookDAO.findBySubjectId(Integer.parseInt(queryParams.get("subjectId")));
-            books.put(JsonHelper.booksToJson(booksList));
+
+            if (booksList == null)
+            {
+                HttpHelper.sendJsonErrorResponse(exchange, 404, "Book not found");
+                return;
+            }
+
+            //books.put(JsonHelper.booksToJson(booksList));
+            for(Book b: booksList)
+            {
+                books.put(JsonHelper.toJson(b));
+            }
         }
         // Recherche par prix maximum
         if (queryParams.containsKey("maxPrice"))
         {
             booksList = bookDAO.findByPrice(Float.parseFloat(queryParams.get("maxPrice")));
-            books.put(JsonHelper.booksToJson(booksList));
+
+            if (booksList == null)
+            {
+                HttpHelper.sendJsonErrorResponse(exchange, 404, "Book not found");
+                return;
+            }
+
+            //books.put(JsonHelper.booksToJson(booksList));
+            for(Book b: booksList)
+            {
+                books.put(JsonHelper.toJson(b));
+            }
         }
         // Aucun critère -> tous les livres
         else if(queryParams.isEmpty())
         {
             booksList = bookDAO.findAll();
-            books.put(JsonHelper.booksToJson(booksList));
+
+            if (booksList == null)
+            {
+                HttpHelper.sendJsonErrorResponse(exchange, 404, "Book not found");
+                return;
+            }
+
+            //books.put(JsonHelper.booksToJson(booksList));
+            for(Book b: booksList)
+            {
+                books.put(JsonHelper.toJson(b));
+            }
         }
 
         HttpHelper.sendJsonResponse(exchange, 200, books.toString());
@@ -217,5 +303,10 @@ public class BooksHandler implements HttpHandler
         {
             HttpHelper.sendResponse(exchange, 400, "Missing id parameter");
         }
+    }
+
+    private void handleOptions(HttpExchange exchange) throws IOException
+    {
+        exchange.sendResponseHeaders(204, -1);  // Réponse sans contenu (No Content)
     }
 }

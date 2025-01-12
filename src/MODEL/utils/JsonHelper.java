@@ -47,6 +47,8 @@ public class JsonHelper
         json.put("id", author.getId());
         json.put("firstName", author.getFirstName());
         json.put("lastName", author.getLastName());
+        json.put("birthDate", author.getBirthDate());
+
         return json;
     }
 

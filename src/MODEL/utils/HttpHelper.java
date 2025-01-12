@@ -17,8 +17,8 @@ public class HttpHelper
     public static void enableCORS(HttpExchange exchange)
     {
         exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");//permets à tout le monde d'accéder à l'API
-        exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");//méthodes autorisées
-        exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");// Autoriser les méthodes HTTP
+        exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE ,OPTIONS");//méthodes autorisées
+        exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization");// Autorisation des headers
 
     }
 

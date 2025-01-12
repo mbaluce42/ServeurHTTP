@@ -43,6 +43,9 @@ public class SubjectsHandler implements HttpHandler
             case "DELETE":
                 handleDeleteSubject(exchange);
                 break;
+            case "OPTIONS":
+                handleOptions(exchange);
+                break;
             default:
                 HttpHelper.sendResponse(exchange,405,"Method not allowed");
 
@@ -100,7 +103,12 @@ public class SubjectsHandler implements HttpHandler
             //traiter la requête
             List<Subject> allSubjects = subjectDAO.findAll();
 
-            subjects.put(JsonHelper.subjectsToJson(allSubjects));
+            for (Subject subject : allSubjects)
+            {
+                subjects.put(JsonHelper.toJson(subject));
+            }
+
+            //subjects.put(JsonHelper.subjectsToJson(allSubjects));
 
         }
 
@@ -222,5 +230,11 @@ public class SubjectsHandler implements HttpHandler
             HttpHelper.sendResponse(exchange, 400, "Missing id parameter");
         }
     }
+
+    private void handleOptions(HttpExchange exchange) throws IOException
+    {
+        exchange.sendResponseHeaders(204, -1);  // Réponse sans contenu (No Content)
+    }
+
 
 }

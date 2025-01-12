@@ -29,20 +29,19 @@ public class AuthorsHandler implements HttpHandler
         switch (requestMethod)
         {
             case "GET":
-                //traiter la requête GET
                 handleGetAuthor(exchange);
                 break;
             case "POST":
-                //traiter la requête POST
                 handlePostAuthor(exchange);
                 break;
             case "PUT":
-                //traiter la requête PUT
                 handlePutAuthor(exchange);
                 break;
             case "DELETE":
-                //traiter la requête DELETE
                 handleDeleteAuthor(exchange);
+                break;
+            case "OPTIONS":
+                handleOptions(exchange);
                 break;
             default:
                 //traiter les autres requêtes
@@ -98,7 +97,10 @@ public class AuthorsHandler implements HttpHandler
             //traiter la requête
             List<Author> allAuthors = authorDAO.findAll();
 
-            authors.put(JsonHelper.authorsToJson(allAuthors));
+            for (Author author : allAuthors)
+            {
+                authors.put(JsonHelper.toJson(author));
+            }
         }
 
         HttpHelper.sendJsonResponse(exchange, 200, authors.toString());
@@ -174,7 +176,10 @@ public class AuthorsHandler implements HttpHandler
                 author.setBirthDate(json.getString("birthDate"));
             }
 
+            System.out.println("author a modif: "+author);
+
             boolean res = authorDAO.update(author);
+            System.out.println("res: "+res);
             if (!res)
             {
                 HttpHelper.sendResponse(exchange, 500, "Failed to update author");
@@ -218,6 +223,11 @@ public class AuthorsHandler implements HttpHandler
         {
             HttpHelper.sendResponse(exchange, 400, "Missing id parameter");
         }
+    }
+
+    private void handleOptions(HttpExchange exchange) throws IOException
+    {
+        exchange.sendResponseHeaders(204, -1);  // Réponse sans contenu (No Content)
     }
 
 }
