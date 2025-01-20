@@ -1,5 +1,6 @@
 import MODEL.handler.AuthorsHandler;
 import MODEL.handler.BooksHandler;
+import MODEL.handler.StaticHandler;
 import MODEL.handler.SubjectsHandler;
 import com.sun.net.httpserver.HttpServer;
 

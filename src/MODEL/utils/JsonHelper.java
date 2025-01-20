@@ -5,7 +5,6 @@ import MODEL.entity.Book;
 import MODEL.entity.Subject;
 import org.json.JSONObject;
 
-import java.util.List;
 
 public class JsonHelper
 {
@@ -18,28 +17,7 @@ public class JsonHelper
         return json;
     }
 
-    public static JSONObject subjectsToJson(List<Subject> subjects)
-    {
-        JSONObject json = new JSONObject();
-        for (Subject subject : subjects)
-        {
-            json.put(String.valueOf(subject.getId()), toJson(subject));
-        }
-        return json;
-    }
 
-    public static Subject toSubject(JSONObject json) {
-        Subject subject = new Subject();
-        if (json.has("id"))
-        {
-            subject.setId(json.getInt("id"));
-        }
-        if (json.has("name"))
-        {
-            subject.setName(json.getString("name"));
-        }
-        return subject;
-    }
     //------------------------------------------------------------------------------------------------
     public static JSONObject toJson(Author author)
     {
@@ -52,33 +30,6 @@ public class JsonHelper
         return json;
     }
 
-    public static JSONObject authorsToJson(List<Author> authors)
-    {
-        JSONObject json = new JSONObject();
-        for (Author author : authors)
-        {
-            json.put(String.valueOf(author.getId()), toJson(author));
-        }
-        return json;
-    }
-
-    public static Author toAuthor(JSONObject json)
-    {
-        Author author = new Author();
-        if (json.has("id"))
-        {
-            author.setId(json.getInt("id"));
-        }
-        if (json.has("firstName"))
-        {
-            author.setFirstName(json.getString("firstName"));
-        }
-        if (json.has("lastName"))
-        {
-            author.setLastName(json.getString("lastName"));
-        }
-        return author;
-    }
 
     //------------------------------------------------------------------------------------------------
 
@@ -97,15 +48,6 @@ public class JsonHelper
         return json;
     }
 
-    public static JSONObject booksToJson(List<Book> books)
-    {
-        JSONObject json = new JSONObject();
-        for (Book book : books)
-        {
-            json.put(String.valueOf(book.getId()), toJson(book));
-        }
-        return json;
-    }
 
     public static Book toBook(JSONObject json)
     {
