@@ -10,22 +10,6 @@ import MODEL.handler.AuthorsHandler;
 import MODEL.handler.BooksHandler;
 import MODEL.handler.SubjectsHandler;
 
-//comande a rentrer dans le terminal pour générer le certificat:
- /*generer le certificat: */
-//keytool -genkeypair -alias serverkey -keyalg RSA -keysize 2048 -validity 365 -keystore keystore.jks -ext SAN=dns:localhost,ip:127.0.0.1 -keypass password -storepass password -dname "CN=localhost, OU=HEPL, O=HEPL, L=Luik, ST=Luik, C=BE"
-
-/* pour stocker le certificat dans un fichier .cer */
-// keytool -export -alias serverkey -keystore keystore.jks -file server.cer -storepass password
-
-// pour installer le certificat dans le navigateur
-/*Double-cliquez sur server.cer
-        Cliquez sur "Installer le certificat"
-        Sélectionnez "Machine locale"
-        Choisissez "Placer tous les certificats dans le magasin suivant"
-        Cliquez "Parcourir"
-        Sélectionnez "Autorités de certification racines de confiance"
-        Suivez les étapes restantes*/
-
 public class Main_Serveur_HTTP_HTTPS
 {
     private static final int PORT_HTTP = 8080;
