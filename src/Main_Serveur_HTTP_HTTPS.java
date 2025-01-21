@@ -1,4 +1,3 @@
-import MODEL.handler.StaticHandler;
 import com.sun.net.httpserver.*;
 import javax.net.ssl.*;
 import java.io.*;
@@ -22,8 +21,7 @@ public class Main_Serveur_HTTP_HTTPS
         try
         {
             startHttpServer();
-            //startHttpsServer();
-            startHttpsServer2();
+            startHttpsServer();
             System.out.println("Serveur HTTP démarré sur le port " + PORT_HTTP);
             System.out.println("Serveur HTTPS démarré sur le port " + PORT_HTTPS);
         }
@@ -42,7 +40,7 @@ public class Main_Serveur_HTTP_HTTPS
         httpServer.start();
     }
 
-    private static void startHttpsServer2() throws IOException, NoSuchAlgorithmException, KeyStoreException, CertificateException, UnrecoverableKeyException, KeyManagementException
+    private static void startHttpsServer() throws IOException, NoSuchAlgorithmException, KeyStoreException, CertificateException, UnrecoverableKeyException, KeyManagementException
     {
         //chargement du keystore
         KeyStore keyStore = KeyStore.getInstance("JKS");
@@ -53,7 +51,7 @@ public class Main_Serveur_HTTP_HTTPS
 
         //config gestionnaire de clés
         KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
-        keyManagerFactory.init(keyStore, KEYSTORE_PASSWORD.toCharArray());
+        keyManagerFactory.init(keyStore, KEYSTORE_PASSWORD.toCharArray());//permet de charger les clés
 
         //config gestionnaire de confiance
         TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance("SunX509");
@@ -65,7 +63,7 @@ public class Main_Serveur_HTTP_HTTPS
 
         //création du serveur
         HttpsServer httpsServer = HttpsServer.create(new InetSocketAddress(PORT_HTTPS), 0);
-        httpsServer.setHttpsConfigurator(new HttpsConfigurator(SsIC)
+        httpsServer.setHttpsConfigurator(new HttpsConfigurator(SsIC)//application de la configuration SSL
         {
             public void configure(HttpsParameters params)
             {
